@@ -27,7 +27,12 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="participants">
               <h5>Participantes inscritos:</h5>
               <ul>
-                ${details.participants.map(p => `<li>${p}</li>`).join('')}
+                ${details.participants.map(p => `
+                  <li>
+                    <span class="participant-name">${p}</span>
+                    <button class="remove-participant" data-activity="${name}" data-participant="${p}" title="Remover participante">&times;</button>
+                  </li>
+                `).join('')}
               </ul>
             </div>
           `;
@@ -83,6 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
         messageDiv.textContent = result.message;
         messageDiv.className = "success";
         signupForm.reset();
+        fetchActivities(); // Atualiza a listagem após adicionar participante
       } else {
         messageDiv.textContent = result.detail || "Ocorreu um erro";
         messageDiv.className = "error";
@@ -99,6 +105,36 @@ document.addEventListener("DOMContentLoaded", () => {
       messageDiv.className = "error";
       messageDiv.classList.remove("hidden");
       console.error("Erro na inscrição:", error);
+    }
+  });
+
+  // Adiciona evento de remoção de participante (delegação)
+  activitiesList.addEventListener('click', async (e) => {
+    if (e.target.classList.contains('remove-participant')) {
+      const activity = e.target.getAttribute('data-activity');
+      const participant = e.target.getAttribute('data-participant');
+      if (confirm(`Remover participante ${participant} da atividade ${activity}?`)) {
+        try {
+          const response = await fetch(`/activities/${encodeURIComponent(activity)}/remove?email=${encodeURIComponent(participant)}`, {
+            method: 'POST',
+          });
+          const result = await response.json();
+          if (response.ok) {
+            messageDiv.textContent = result.message || 'Participante removido com sucesso!';
+            messageDiv.className = 'success';
+            fetchActivities();
+          } else {
+            messageDiv.textContent = result.detail || 'Erro ao remover participante.';
+            messageDiv.className = 'error';
+          }
+          messageDiv.classList.remove('hidden');
+          setTimeout(() => messageDiv.classList.add('hidden'), 5000);
+        } catch (error) {
+          messageDiv.textContent = 'Erro ao remover participante.';
+          messageDiv.className = 'error';
+          messageDiv.classList.remove('hidden');
+        }
+      }
     }
   });
 

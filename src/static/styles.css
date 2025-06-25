@@ -93,6 +93,18 @@ section h3 {
   line-height: 1.5;
   position: relative;
   padding-left: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 26px;
+  background: #f3f6fd;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  box-shadow: 0 1px 3px rgba(121,134,203,0.04);
+  transition: background 0.2s;
+}
+.participants li:hover {
+  background: #e8eaf6;
 }
 .participants li::before {
   content: '\1F464'; /* ícone de usuário Unicode */
@@ -102,6 +114,33 @@ section h3 {
   color: #5c6bc0;
   font-size: 1.1em;
   line-height: 1.2;
+}
+.participant-name {
+  font-weight: 600;
+  color: #283593;
+  margin-right: 8px;
+  letter-spacing: 0.2px;
+}
+.remove-participant {
+  background: #ff5252;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 1.2em;
+  cursor: pointer;
+  margin-left: 6px;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 6px rgba(255,82,82,0.08);
+  vertical-align: middle;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.remove-participant:hover {
+  background: #c62828;
+  box-shadow: 0 4px 12px rgba(255,82,82,0.18);
 }
 
 .form-group {
